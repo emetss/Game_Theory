@@ -1,7 +1,7 @@
 import numpy as np
 from random import choice
 
-dummy_game=np.array([1,-1,2,-2])
+dummy_game=np.array([1,-1,-1,1])
 
 
 class ZeroSumGame(object):
@@ -42,22 +42,28 @@ class ZeroSumGame(object):
         counter=0
         temp_empirical_mixed_strategy_i=1000
         temp_empirical_mixed_strategy_minusi=1000
-        difference_1=5
-        difference_2=5
+        difference_1=1000
+        difference_2=1000
+        difference_1_old=1000
+        difference_2_old=1000
 
 
         while difference_1>epsilon_1 or difference_2>epsilon_2:
+            # increasing l
             counter+=1
+            #calculating the empirical mixed strategies
             empirical_mixed_strategy_i=counter_i_strategy/counter
             empirical_mixed_strategy_minusi=counter_minusi_strategy/counter
+            #calculating the expected utility for player 1:
             i_payoff_1=self.i_strategies[0][0]*empirical_mixed_strategy_minusi+self.i_strategies[0][1]*(1-empirical_mixed_strategy_minusi)
             i_payoff_2=self.i_strategies[1][0]*empirical_mixed_strategy_minusi+self.i_strategies[1][1]*(1-empirical_mixed_strategy_minusi)
             #print(i_payoff_1, i_payoff_2)
+            #Choosing the best response. Heads if tie.
             if i_payoff_1>=i_payoff_2:
                 i_best_response=self.i_strategies[0]
             else:
                 i_best_response=self.i_strategies[1]
-
+            #same procedure for player 2
             minusi_payoff_1=self.minusi_strategies[0][0]*empirical_mixed_strategy_i+self.minusi_strategies[0][1]*(1-empirical_mixed_strategy_i)
             minusi_payoff_2=self.minusi_strategies[1][0]*empirical_mixed_strategy_i+self.minusi_strategies[1][1]*(1-empirical_mixed_strategy_i)
 
@@ -66,21 +72,24 @@ class ZeroSumGame(object):
             else:
                 minusi_best_response=self.minusi_strategies[1]
 
-            i_strategy=i_best_response
+            #i_strategy=i_best_response
             #print(i_strategy)
-            minus_i_strategy=minusi_best_response
-
-            if np.array_equal(i_strategy, init_i_strategy):
+            #minus_i_strategy=minusi_best_response
+            #If Heads is chosen, the number k of times this strategy was played is increased by 1
+            if np.array_equal(i_best_response, init_i_strategy):
                 counter_i_strategy+=1
 
-            if np.array_equal(minus_i_strategy, init_minusi_strategy):
+            if np.array_equal(minusi_best_response, init_minusi_strategy):
                 counter_minusi_strategy+=1
 
+            #checking if the convergence condition is fulfilled
+            difference_1_ancient=difference_1_old
+            difference_2_ancient=difference_2_old
+            difference_1_old=difference_1
+            difference_2_old=difference_2
             difference_1=abs(temp_empirical_mixed_strategy_i-empirical_mixed_strategy_i)
             difference_2=abs(temp_empirical_mixed_strategy_minusi-empirical_mixed_strategy_minusi)
-            #print(difference_1)
-            #print(difference_2)
-
+            #updating the temporary variables
             temp_empirical_mixed_strategy_i=empirical_mixed_strategy_i
             temp_empirical_mixed_strategy_minusi=empirical_mixed_strategy_minusi
             #print([temp_empirical_mixed_strategy_i,temp_empirical_mixed_strategy_minusi])
@@ -88,6 +97,8 @@ class ZeroSumGame(object):
             pass
 
         self.nash_equilibrium=[empirical_mixed_strategy_i, 1-empirical_mixed_strategy_i, empirical_mixed_strategy_minusi, 1-empirical_mixed_strategy_minusi]
+        self.counter=counter
+        self.rate_of_convergence=[np.log(abs(difference_1)/abs(difference_1_old))/np.log(abs(difference_1_old)/abs(difference_1_ancient)),np.log(abs(difference_2)/abs(difference_2_old))/np.log(abs(difference_2_old)/abs(difference_2_ancient))]
 
         #print(self.minusi_payoffs)
         #print(self.minusi_temp)
@@ -101,4 +112,6 @@ my_zerosumgame.fictitiousPlay(0.000001, 0.000001)
 #print(my_zerosumgame.minusi_strategies)
 #print(my_zerosumgame.i_strategies)
 print(my_zerosumgame.nash_equilibrium)
+print(my_zerosumgame.counter)
+print(my_zerosumgame.rate_of_convergence)
 
