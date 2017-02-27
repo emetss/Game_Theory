@@ -1,6 +1,6 @@
 import numpy as np
 
-dummy_game=np.array([4,3,2,1])
+dummy_game=np.array([1,-1,2,-2])
 
 
 class ZeroSumGame(object):
@@ -97,6 +97,7 @@ class ZeroSumGame(object):
 
         self.nash_equilibrium=[empirical_mixed_strategy_row, 1-empirical_mixed_strategy_row, empirical_mixed_strategy_col, 1-empirical_mixed_strategy_col]
         self.counter=counter
+        #calculating the rate of convergence and handling division by zero.
         try:
             rate_of_convergence_row=np.log(abs(difference_1)/abs(difference_1_old))/np.log(abs(difference_1_old)/abs(difference_1_ancient))
         except ZeroDivisionError:
@@ -107,12 +108,6 @@ class ZeroSumGame(object):
             rate_of_convergence_col="instant"
         self.rate_of_convergence=[rate_of_convergence_row,rate_of_convergence_col]
 
-        print(difference_1_old)
-        print(difference_1_ancient)
-        print(difference_2_old)
-        print(difference_1_ancient)
-        print(counter_row)
-        print(counter_col)
         return
 
 my_zerosumgame=ZeroSumGame(dummy_game)
