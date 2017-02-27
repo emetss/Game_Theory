@@ -96,9 +96,6 @@ class ZeroSumGame(object):
 
 my_zerosumgame=ZeroSumGame(dummy_game)
 my_zerosumgame.fictitiousPlay(0.0001, 0.0001)
-#print(my_zerosumgame.i_strategy)
-#print(my_zerosumgame.minusi_strategies)
-#print(my_zerosumgame.i_strategies)
 print(my_zerosumgame.nash_equilibrium)
 print(my_zerosumgame.counter)
 print(my_zerosumgame.rate_of_convergence)
