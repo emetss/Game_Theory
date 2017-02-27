@@ -1,6 +1,6 @@
 import numpy as np
 
-dummy_game=np.array([1,-1,-1,1])
+dummy_game=np.array([4,3,2,1])
 
 
 class ZeroSumGame(object):
@@ -33,6 +33,8 @@ class ZeroSumGame(object):
         init_row_strategy=self.row_strategies[0]
         init_col_strategy=self.col_strategies[0]
         #initializing some variables preparing the while-loop
+        counter_row=0
+        counter_col=0
         counter_row_strategy=1
         counter_col_strategy=1
         counter=0
@@ -47,6 +49,11 @@ class ZeroSumGame(object):
         while difference_1>epsilon_1 or difference_2>epsilon_2:
             # increasing l
             counter+=1
+            if difference_1>epsilon_1:
+                counter_row+=1
+            if difference_2>epsilon_2:
+                counter_col+=1
+
             #calculating the empirical mixed strategies
             empirical_mixed_strategy_row=counter_row_strategy/counter
             empirical_mixed_strategy_col=counter_col_strategy/counter
@@ -90,8 +97,22 @@ class ZeroSumGame(object):
 
         self.nash_equilibrium=[empirical_mixed_strategy_row, 1-empirical_mixed_strategy_row, empirical_mixed_strategy_col, 1-empirical_mixed_strategy_col]
         self.counter=counter
-        self.rate_of_convergence=[np.log(abs(difference_1)/abs(difference_1_old))/np.log(abs(difference_1_old)/abs(difference_1_ancient)),np.log(abs(difference_2)/abs(difference_2_old))/np.log(abs(difference_2_old)/abs(difference_2_ancient))]
+        try:
+            rate_of_convergence_row=np.log(abs(difference_1)/abs(difference_1_old))/np.log(abs(difference_1_old)/abs(difference_1_ancient))
+        except ZeroDivisionError:
+            rate_of_convergence_row="instant"
+        try:
+            rate_of_convergence_col=np.log(abs(difference_2)/abs(difference_2_old))/np.log(abs(difference_2_old)/abs(difference_2_ancient))
+        except ZeroDivisionError:
+            rate_of_convergence_col="instant"
+        self.rate_of_convergence=[rate_of_convergence_row,rate_of_convergence_col]
 
+        print(difference_1_old)
+        print(difference_1_ancient)
+        print(difference_2_old)
+        print(difference_1_ancient)
+        print(counter_row)
+        print(counter_col)
         return
 
 my_zerosumgame=ZeroSumGame(dummy_game)
