@@ -94,15 +94,17 @@ class ZeroSumGame(object):
 
         self.nash_equilibrium=[empirical_mixed_strategy_row, 1-empirical_mixed_strategy_row, empirical_mixed_strategy_col, 1-empirical_mixed_strategy_col]
         self.counter=counter
+        self.counter_row=counter_row
+        self.counter_col=counter_col
         #calculating the rate of convergence and handling division by zero.
         try:
             rate_of_convergence_row=np.log(abs(difference_1)/abs(difference_1_old))/np.log(abs(difference_1_old)/abs(difference_1_ancient))
         except ZeroDivisionError:
-            rate_of_convergence_row="instant"
+            rate_of_convergence_row=float('Inf')
         try:
             rate_of_convergence_col=np.log(abs(difference_2)/abs(difference_2_old))/np.log(abs(difference_2_old)/abs(difference_2_ancient))
         except ZeroDivisionError:
-            rate_of_convergence_col="instant"
+            rate_of_convergence_col=float('Inf')
         self.rate_of_convergence=[rate_of_convergence_row,rate_of_convergence_col]
 
         return
