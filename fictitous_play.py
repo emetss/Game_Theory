@@ -1,8 +1,5 @@
 import numpy as np
 
-dummy_game=np.array([1,-1,2,-2])
-
-
 class ZeroSumGame(object):
     '''A zero-sum-game specified by an array'''
 
@@ -110,9 +107,4 @@ class ZeroSumGame(object):
 
         return
 
-my_zerosumgame=ZeroSumGame(dummy_game)
-my_zerosumgame.fictitiousPlay(0.0001, 0.0001)
-print(my_zerosumgame.nash_equilibrium)
-print(my_zerosumgame.counter)
-print(my_zerosumgame.rate_of_convergence)
 
