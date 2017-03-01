@@ -158,18 +158,18 @@ class Generator(object):
 
         return game
 
-
+#Initializing variables.
 data_no_constraints=[]
 data_pure_nash_candidates=[]
 data_without_pure_nash=[]
 data_inf_rate_of_convergence=[]
-twocounter=0
-hundredcounter=0
 for i in range (1000):
+    #Using Class objects/methods to generate games and run fictitious play on them.
     instance_of_generator = Generator()
     some_game = instance_of_generator.no_constraints()
     my_zerosumgame2=fp.ZeroSumGame(some_game)
     my_zerosumgame2.fictitiousPlay(0.0001, 0.0001)
+    #building data lists for different cases.
     data_no_constraints.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
     if float("Inf") in my_zerosumgame2.rate_of_convergence:
         data_inf_rate_of_convergence.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
@@ -178,6 +178,7 @@ for i in range (1000):
     else:
         data_without_pure_nash.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
 
+#Plotting data...
 n_it=[]
 for i in data_no_constraints:
     n_it.append(i[4])
@@ -219,6 +220,8 @@ plt.ylabel="# of Iterations"
 plt.title("Games without Pure Nash Candidates")
 plt.show()
 
+
+#Generating games without strictly dominant strategies and running fictitious play on them.
 data_no_strictly_dominant_strategies=[]
 for i in range (1000):
     instance_of_generator = Generator()
