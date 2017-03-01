@@ -160,6 +160,9 @@ class Generator(object):
 
 
 data_no_constraints=[]
+data_pure_nash_candidates=[]
+data_without_pure_nash=[]
+data_inf_rate_of_convergence=[]
 twocounter=0
 hundredcounter=0
 for i in range (1000):
@@ -167,21 +170,25 @@ for i in range (1000):
     some_game = instance_of_generator.no_constraints()
     my_zerosumgame2=fp.ZeroSumGame(some_game)
     my_zerosumgame2.fictitiousPlay(0.0001, 0.0001)
+    data_no_constraints.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
     # if my_zerosumgame2.counter==2:
     #     twocounter+=1
     # if my_zerosumgame2.counter==101:
     #     hundredcounter+=1
     #if 1 not in my_zerosumgame2.nash_equilibrium:
-    #if float("Inf") in my_zerosumgame2.rate_of_convergence:
-    if filter(lambda x: x>=0.99, my_zerosumgame2.nash_equilibrium)!=[]:
-        data_no_constraints.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
-
+    if float("Inf") in my_zerosumgame2.rate_of_convergence:
+        data_inf_rate_of_convergence.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
+    if list(filter(lambda x: x>=0.99, my_zerosumgame2.nash_equilibrium))!=[]:
+        data_pure_nash_candidates.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
+    else:
+        data_without_pure_nash.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
     #print(some_game)
     #print(my_zerosumgame2.nash_equilibrium)
     #print(my_zerosumgame2.counter)
     #print(my_zerosumgame2.rate_of_convergence)
 
 #print(twocounter/hundredcounter)
+
 x=[]
 y=[]
 n_it=[]
@@ -193,10 +200,82 @@ for i in data_no_constraints:
 #print("")
 
 plt.plot(n_it, 'ro')
+plt.xlabel("n")
+plt.ylabel("# of Iterations")
+plt.title("All Games")
 plt.show()
 plt.scatter(x, y)
-plt.title("No Constraints")
+plt.title("All Games")
 plt.show()
+
+x=[]
+y=[]
+n_it=[]
+for i in data_inf_rate_of_convergence:
+    x.append(i[2])
+    y.append(i[3])
+    n_it.append(i[4])
+
+plt.plot(n_it, 'ro')
+plt.xlabel("n")
+plt.ylabel="# of Iterations"
+plt.title("Games with Infinite Convergence Rate")
+plt.show()
+plt.scatter(x, y)
+plt.title("Games with Infinite Convergence Rate")
+plt.show()
+
+x=[]
+y=[]
+n_it=[]
+for i in data_pure_nash_candidates:
+    x.append(i[2])
+    y.append(i[3])
+    n_it.append(i[4])
+    #print(i)
+#print("")
+
+plt.plot(n_it, 'ro')
+plt.xlabel="n"
+plt.ylabel="# of Iterations"
+plt.title("Pure Nash Equilibrium Candidates")
+plt.show()
+plt.scatter(x, y)
+plt.title("Pure Nash Equilibrium Candidates")
+plt.show()
+
+x=[]
+y=[]
+n_it=[]
+for i in data_without_pure_nash:
+    x.append(i[2])
+    y.append(i[3])
+    n_it.append(i[4])
+    #print(i)
+#print("")
+
+plt.plot(n_it, 'ro')
+plt.xlabel="n"
+plt.ylabel="# of Iterations"
+plt.title("Games without Pure Nash Candidates")
+plt.show()
+plt.scatter(x, y)
+plt.title("Games without Pure Nash Candidates")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 data_no_strictly_dominant_strategies=[]
 for i in range (1000):
@@ -231,7 +310,7 @@ plt.show()
 #print("")
 
 data_no_NE_in_dominant_strategies=[]
-for i in range (1):
+for i in range (1000):
     instance_of_generator = Generator()
     some_game = instance_of_generator.no_NE_in_dominant_strategies()
     my_zerosumgame2=fp.ZeroSumGame(some_game)
@@ -282,7 +361,7 @@ plt.title("NE in Dominant Strategies")
 plt.show()
 
 data_exactly_one_dominant_strategy=[]
-for i in range (1):
+for i in range (1000):
     instance_of_generator = Generator()
     some_game = instance_of_generator.exactly_one_dominant_strategy()
     my_zerosumgame2=fp.ZeroSumGame(some_game)
