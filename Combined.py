@@ -178,31 +178,19 @@ for i in range (1000):
     else:
         data_without_pure_nash.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.counter, my_zerosumgame2.rate_of_convergence])
 
-x=[]
-y=[]
 n_it=[]
 for i in data_no_constraints:
-    x.append(i[2])
-    y.append(i[3])
     n_it.append(i[4])
-    #print(i)
-#print("")
+
 
 plt.plot(n_it, 'ro')
 plt.xlabel("n")
 plt.ylabel("# of Iterations")
 plt.title("All Games")
 plt.show()
-plt.scatter(x, y)
-plt.title("All Games")
-plt.show()
 
-x=[]
-y=[]
 n_it=[]
 for i in data_inf_rate_of_convergence:
-    x.append(i[2])
-    y.append(i[3])
     n_it.append(i[4])
 
 plt.plot(n_it, 'ro')
@@ -210,16 +198,9 @@ plt.xlabel("n")
 plt.ylabel="# of Iterations"
 plt.title("Games with Infinite Convergence Rate")
 plt.show()
-plt.scatter(x, y)
-plt.title("Games with Infinite Convergence Rate")
-plt.show()
 
-x=[]
-y=[]
 n_it=[]
 for i in data_pure_nash_candidates:
-    x.append(i[2])
-    y.append(i[3])
     n_it.append(i[4])
 
 plt.plot(n_it, 'ro')
@@ -227,24 +208,14 @@ plt.xlabel="n"
 plt.ylabel="# of Iterations"
 plt.title("Pure Nash Equilibrium Candidates")
 plt.show()
-plt.scatter(x, y)
-plt.title("Pure Nash Equilibrium Candidates")
-plt.show()
 
-x=[]
-y=[]
 n_it=[]
 for i in data_without_pure_nash:
-    x.append(i[2])
-    y.append(i[3])
     n_it.append(i[4])
 
 plt.plot(n_it, 'ro')
 plt.xlabel="n"
 plt.ylabel="# of Iterations"
-plt.title("Games without Pure Nash Candidates")
-plt.show()
-plt.scatter(x, y)
 plt.title("Games without Pure Nash Candidates")
 plt.show()
 
@@ -256,18 +227,11 @@ for i in range (1000):
     my_zerosumgame2.fictitiousPlay(0.0001, 0.0001)
     data_no_strictly_dominant_strategies.append([list(some_game),my_zerosumgame2.nash_equilibrium,my_zerosumgame2.counter_row,my_zerosumgame2.counter_col,my_zerosumgame2.rate_of_convergence])
 
-x_prime=[]
-y_prime=[]
 n_it=[]
 for i in data_no_strictly_dominant_strategies:
-    x_prime.append(i[2])
-    y_prime.append(i[3])
     n_it.append(i[4])
 
-plt.plot(n_it, 'ro')
-plt.show()
-
-plt.scatter(x_prime, y_prime)
 plt.title("No Strictly Dominant Strategies")
+plt.plot(n_it, 'ro')
 plt.show()
 
